@@ -18,19 +18,33 @@ Running the PPF
   python3 PPF.py (Input.fasta) (Path/to/genomad_db/) -o (OutputFolder/) -j (Path/to/PhageProteins.hmm) -l (Path/to/PlasmidProteins.hmm) 
 
   The following inputs are optional commands for controlling the strictness of parameters
-  -h, --help
+  
+  -h, --help:
     Opens the help menu
-  -s, --splits
-    Determines number of splits for genomad (default 8)
-  -t, --output_dir
-    Determines number of threads for genomad (default 10)
-  -e, --evalue_cutoff
-    Set E-value cutoff for hmmscan (default 1e-5)
-  -g, --gene_min
     
-  -p, --percent_min
-  -m, --plasmid_threshold
-  -c, --combined_threshold
-  -x, --extract_toggle
+  -s, --splits:
+    Determines number of splits for genomad (default 8)
+    
+  -t, --output_dir:
+    Determines number of threads for genomad (default 10)
+  
+  -e, --evalue_cutoff:
+    Set E-value cutoff for hmmscan (default 1e-5)
+  
+  -g, --gene_min:
+    Minimum amount of genes for a phage plasmid to be identified (default 15)
+    
+  -p, --percent_min:
+    Minimum percent crossover of phages and plasmids for a phage plasmid to be identified (default 0.15)
+    
+  -m, --plasmid_threshold:
+    Minimum plasmid_score needed to be have an HMMscan run (default 0.8)
+  
+  -c, --combined_threshold:
+    Minimum plasmid_score + phage_score sum to have an HMMscan run (default 0.85)
+  
+  -x, --extract_toggle:
+    Extracts the scaffolds with likelyhood of being phage plasmids (default off)
+    
   
   
