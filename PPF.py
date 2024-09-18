@@ -59,9 +59,6 @@ def log_to_console_and_file(message):
 
 log_to_console_and_file(f"Writing logs to {error_log_file}")
 
-# Set the directory for the scripts
-script_dir = os.path.join(os.getcwd(), 'Software')
-
 # Run the first script (PhagePlasmidFinder.py) with arguments from the wrapper script
 script1_args = [
     'python3', 'PhagePlasmidFinder.py',
