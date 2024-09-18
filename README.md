@@ -9,21 +9,37 @@ Installation:
 
 wget https://github.com/PeterBadciong/PhagePlasmidFinder/archive/refs/heads/PPF.zip
 
+#Downloads the python scripts and database
+
 unzip PPF.zip
 
-cd PhagePlasmidFinder-PFF
+#Unzips wget
+
+cd PhagePlasmidFinder-PPF
+
+#Changes Directory to where main script is present
 
 unzip hmm_files/PhageProteins.hmm.zip
 
-rm hmm/files/PhageProteins.hmm
+#Unzips compressed Phage hmms
 
-hmmpress PhageProteins.hmm
+rm hmm_files/PhageProteins.hmm
+
+#removes old zip file
 
 hmmpress PlasmidProteins.hmm
 
-First, download the required files using 
+hmmpress PhageProteins.hmm
 
-Mamba installation: 
+#hmmpress the phage and plasmid hmms
+
+conda env create -f PPF.yml
+
+#Creates a conda enviroment for genomad dependancy
+
+conda activate PPF
+
+#Activates the conda enviroment
 
 Execution
 
