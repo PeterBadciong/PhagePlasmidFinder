@@ -73,7 +73,7 @@ script1_args = [
     '-t', str(args.threads)
 ] + (['-x'] if args.extract_toggle else [])
 
-log_to_console_and_file("Running script1 (PPF1.py)...")
+log_to_console_and_file("Running (PPF1.py)...")
 run_with_logging(script1_args)
 
 # Function to extract the scaffold from the FASTA file
@@ -122,7 +122,7 @@ if os.path.exists(genomad_output):
 	'--percent_min', str(args.percent_min)
     ]
 
-    log_to_console_and_file("Running script2 (PPF2.py)...")
+    log_to_console_and_file("Running (PPF2.py)...")
     run_with_logging(script2_args)
 
 
