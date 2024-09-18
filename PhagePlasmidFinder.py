@@ -59,9 +59,9 @@ def log_to_console_and_file(message):
 
 log_to_console_and_file(f"Writing logs to {error_log_file}")
 
-# Run the first script (PhagePlasmidFinder.py) with arguments from the wrapper script
+# Run the first script (PPF1.py) with arguments from the wrapper script
 script1_args = [
-    'python3', 'PhagePlasmidFinder.py',
+    'python3', 'PPF1.py',
     args.fasta_file,
     args.genomad_db,
     '--plasmid_hmm_file', args.plasmid_hmm_file,
@@ -73,16 +73,16 @@ script1_args = [
     '-t', str(args.threads)
 ] + (['-x'] if args.extract_toggle else [])
 
-log_to_console_and_file("Running script1 (PhagePlasmidFinder.py)...")
+log_to_console_and_file("Running script1 (PPF1.py)...")
 run_with_logging(script1_args)
 
 # Check if the first script was successful before running the second script
 genomad_output = os.path.join(args.output_dir, 'genomad_output')
 
 if os.path.exists(genomad_output):
-    # Run the second script (PlasmidBypass.py) with only the required arguments
+    # Run the second script (PPF2.py) with only the required arguments
     script2_args = [
-        'python3', 'PlasmidBypass.py',
+        'python3', 'PPF2.py',
         args.fasta_file,
         genomad_output,
         args.output_dir,
@@ -93,7 +93,7 @@ if os.path.exists(genomad_output):
 	'--percent_min', str(args.percent_min)
     ]
 
-    log_to_console_and_file("Running script2 (PlasmidBypass.py)...")
+    log_to_console_and_file("Running script2 (PPF2.py)...")
     run_with_logging(script2_args)
 
 # Move specified output files to the Discovery directory
