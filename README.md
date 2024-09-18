@@ -19,7 +19,7 @@ cd PhagePlasmidFinder-PPF
 
 #Changes Directory to where main script is present
 
-unzip hmm_files/PhageProteins.hmm.zip
+unzip hmm_files/PhageProteins.hmm.zip hmm_files/
 
 #Unzips compressed Phage hmms
 
@@ -27,9 +27,9 @@ rm hmm_files/PhageProteins.hmm.zip
 
 #removes old zip file
 
-hmmpress PlasmidProteins.hmm
+hmmpress hmm_files/PlasmidProteins.hmm
 
-hmmpress PhageProteins.hmm
+hmmpress hmm_files/PhageProteins.hmm
 
 #hmmpress the phage and plasmid hmms
 
