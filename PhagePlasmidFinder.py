@@ -97,7 +97,7 @@ if os.path.exists(genomad_output):
     run_with_logging(script2_args)
 
 # Move specified output files to the Discovery directory
-output_extensions = ['.tbl', '.fasta', 'phage.csv', 'plasmid.csv']
+output_extensions = ['.tbl', '_Plasmids.fasta', 'phage.csv', 'plasmid.csv']
 for filename in os.listdir(args.output_dir):
     if any(filename.endswith(ext) for ext in output_extensions):
         source_path = os.path.join(args.output_dir, filename)
