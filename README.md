@@ -8,14 +8,14 @@ Usage
 Installation:
 Mamba installation: 
 
-Download the PPF.py, PhagePlasmidFinder.py, and PlasmidBypass.py scripts
+Download the PhagePlasmidFinder.py, PPF1.py, and PPF2.py scripts
 
 Execution
 
 Running the PPF
-  The PPF uses 3 scripts, PPF.py is the input wrapper script, while PlasmidBypass.py and PhagePlasmidFinder.py are the scripts that execute genomad and hmmscan, along with the parsing out the data and extracting the scaffolds
-  To execute the PPF, required minimum for execution is below
-  python3 PPF.py (Input.fasta) (Path/to/genomad_db/) -o (OutputFolder/) -j (Path/to/PhageProteins.hmm) -l (Path/to/PlasmidProteins.hmm) 
+  The PhagePlasmidFinder uses 3 scripts, PhagePlasmidFinder.py is the input wrapper script, while PPF1.py and PPF2.py are the scripts that execute genomad and hmmscan, along with the parsing out the data and extracting the scaffolds
+  To execute the PhagePlasmidFinder, required minimum for execution is below
+  python3 PhagePlasmidFinder.py (Input.fasta) (Path/to/genomad_db/) -o (OutputFolder/) -j (Path/to/PhageProteins.hmm) -l (Path/to/PlasmidProteins.hmm) 
 
   The following inputs are optional commands for controlling the strictness of parameters
   
