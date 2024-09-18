@@ -23,7 +23,7 @@ unzip hmm_files/PhageProteins.hmm.zip
 
 #Unzips compressed Phage hmms
 
-rm hmm_files/PhageProteins.hmm
+rm hmm_files/PhageProteins.hmm.zip
 
 #removes old zip file
 
