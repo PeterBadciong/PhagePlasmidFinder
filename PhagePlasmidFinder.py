@@ -76,6 +76,35 @@ script1_args = [
 log_to_console_and_file("Running script1 (PPF1.py)...")
 run_with_logging(script1_args)
 
+# Function to extract the scaffold from the FASTA file
+def extract_scaffold(fasta_file, scaffold_name):
+    scaffold_data = []
+    found_scaffold = False
+
+    with open(fasta_file, 'r') as file:
+        write_scaffold = False
+
+        for line in file:
+            if line.startswith('>'):
+                if line.startswith(f'>{scaffold_name}'):
+                    write_scaffold = True
+                    scaffold_data.append(line)
+                    found_scaffold = True
+                else:
+                    write_scaffold = False
+            elif write_scaffold:
+                scaffold_data.append(line)
+
+    if not found_scaffold:
+        print(f"Scaffold {scaffold_name} not found in {fasta_file}")
+    
+    return scaffold_data if scaffold_data else None
+
+# Create the PhagePlasmidFasta directory inside the output directory
+phage_plasmid_fasta_dir = os.path.join(args.output_dir, 'PhagePlasmidFasta')
+if not os.path.exists(phage_plasmid_fasta_dir):
+    os.makedirs(phage_plasmid_fasta_dir)
+
 # Check if the first script was successful before running the second script
 genomad_output = os.path.join(args.output_dir, 'genomad_output')
 
@@ -96,8 +125,64 @@ if os.path.exists(genomad_output):
     log_to_console_and_file("Running script2 (PPF2.py)...")
     run_with_logging(script2_args)
 
+
+# Function to extract the scaffold from the FASTA file
+def extract_scaffold(fasta_file, scaffold_name):
+    scaffold_data = []
+    found_scaffold = False
+
+    with open(fasta_file, 'r') as file:
+        write_scaffold = False
+
+        for line in file:
+            if line.startswith('>'):
+                if line.startswith(f'>{scaffold_name}'):
+                    write_scaffold = True
+                    scaffold_data.append(line)
+                    found_scaffold = True
+                else:
+                    write_scaffold = False
+            elif write_scaffold:
+                scaffold_data.append(line)
+
+    if not found_scaffold:
+        print(f"Scaffold {scaffold_name} not found in {fasta_file}")
+    
+    return scaffold_data if scaffold_data else None
+
+if os.path.exists(genomad_output):
+    # Run the second script (PPF2.py) with only the required arguments
+    script2_args = [
+        'python3', 'PPF2.py',
+        args.fasta_file,
+        genomad_output,
+        args.output_dir,
+        args.phage_hmm_file,
+        '--plasmid_threshold', str(args.plasmid_threshold),
+        '--combined_threshold', str(args.combined_threshold),
+        '--gene_min', str(args.gene_min),
+        '--percent_min', str(args.percent_min)
+    ]
+# After running the second script, check for PhagePlasmids.csv output
+    phage_plasmids_file = os.path.join(args.output_dir, 'PhagePlasmids.csv')
+    if os.path.exists(phage_plasmids_file):
+        with open(phage_plasmids_file, 'r') as file:
+            # Read the CSV file and extract scaffold names
+            lines = file.readlines()
+            for line in lines[1:]:  # Skip header
+                parts = line.strip().split(',')
+                if len(parts) > 0:
+                    scaffold_name = parts[0]
+                    # Extract the scaffold data from the FASTA file
+                    scaffold_data = extract_scaffold(args.fasta_file, scaffold_name)
+                    if scaffold_data:
+                        scaffold_output_file = os.path.join(phage_plasmid_fasta_dir, f'{scaffold_name}.fasta')
+                        with open(scaffold_output_file, 'w') as scaffold_file:
+                            scaffold_file.writelines(scaffold_data)
+                        log_to_console_and_file(f"Extracted and saved scaffold {scaffold_name} to {scaffold_output_file}")
+
 # Move specified output files to the Discovery directory
-output_extensions = ['.tbl', '_Plasmids.fasta', 'phage.csv', 'plasmid.csv']
+output_extensions = ['.tbl', 'olds.fasta', 'phage.csv', 'plasmid.csv']
 for filename in os.listdir(args.output_dir):
     if any(filename.endswith(ext) for ext in output_extensions):
         source_path = os.path.join(args.output_dir, filename)
