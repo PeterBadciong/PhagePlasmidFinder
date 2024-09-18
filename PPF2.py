@@ -38,7 +38,7 @@ def extract_scaffolds(genomad_output, output_folder, fasta_file, plasmid_thresho
         
         os.makedirs(output_folder, exist_ok=True)
         
-        combined_output_file = os.path.join(output_folder, f"{input_name}_combined_scaffolds.fasta")
+        combined_output_file = os.path.join(output_folder, f"{input_name}_Plasmids.fasta")
         
         with open(combined_output_file, 'w') as combined_out:
             with open(classification_file, 'r') as tsvfile:
