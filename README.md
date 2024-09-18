@@ -6,16 +6,31 @@ Phage plasmids are hybridized mobile genetic elements found within bacterial gen
 Usage
 
 Installation:
-Mamba installation: 
 
-Download the PhagePlasmidFinder.py, PPF1.py, and PPF2.py scripts
+wget https://github.com/PeterBadciong/PhagePlasmidFinder/archive/refs/heads/PPF.zip
+
+unzip PPF.zip
+
+cd PhagePlasmidFinder-PFF
+
+unzip hmm_files/PhageProteins.hmm.zip
+
+rm hmm/files/PhageProteins.hmm
+
+hmmpress PhageProteins.hmm
+
+hmmpress PlasmidProteins.hmm
+
+First, download the required files using 
+
+Mamba installation: 
 
 Execution
 
 Running the PPF
-  The PhagePlasmidFinder uses 3 scripts, PhagePlasmidFinder.py is the input wrapper script, while PPF1.py and PPF2.py are the scripts that execute genomad and hmmscan, along with the parsing out the data and extracting the scaffolds
-  To execute the PhagePlasmidFinder, required minimum for execution is below
-  python3 PhagePlasmidFinder.py (Input.fasta) (Path/to/genomad_db/) -o (OutputFolder/) -j (Path/to/PhageProteins.hmm) -l (Path/to/PlasmidProteins.hmm) 
+  The PPF uses 3 scripts, PPF.py is the input wrapper script, while PlasmidBypass.py and PhagePlasmidFinder.py are the scripts that execute genomad and hmmscan, along with the parsing out the data and extracting the scaffolds
+  To execute the PPF, required minimum for execution is below
+  python3 PPF.py (Input.fasta) (Path/to/genomad_db/) -o (OutputFolder/) -j (Path/to/PhageProteins.hmm) -l (Path/to/PlasmidProteins.hmm) 
 
   The following inputs are optional commands for controlling the strictness of parameters
   
@@ -44,7 +59,3 @@ Running the PPF
     Minimum plasmid_score + phage_score sum to have an HMMscan run (default 0.85)
   
   -x, --extract_toggle:
-    Extracts the scaffolds with likelyhood of being phage plasmids (default off)
-    
-  
-  
