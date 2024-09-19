@@ -44,12 +44,17 @@ genomad download-database .
 ```   
   -h, --help                  Opens the help menu
   -s, --splits                Determines number of splits for genomad (default 8)
-  -t, --output_dir            Determines number of threads for genomad (default 10)
+  -t, --threads            Determines number of threads for genomad (default 10)
   -e, --evalue_cutoff         Set E-value cutoff for hmmscan (default 1e-5)
   -g, --gene_min              Minimum amount of genes for a phage plasmid to be identified (default 15)
   -p, --percent_min           Minimum percent crossover of phages and plasmids for a phage plasmid to be identified (default 0.15)
   -m, --plasmid_threshold     Minimum plasmid_score needed to be have an HMMscan run (default 0.8)
   -c, --combined_threshold    Minimum plasmid_score + phage_score sum to have an HMMscan run (default 0.85)
   -x, --extract_toggle        Toggles extraction of scaffolds
+```
+### Test Run of Phage Plasmid Finder
+Run the following command on the provided .fna file
+```
+python3 PhagePlasmidFinder.py Tritonibacter_mobilis_A3R06.fna genomad_db -o Tritonibacter_mobilis_Output -j hmm_files/PhageProteins.hmm -l hmm_files/PlasmidProteins.hmm -s 8 -t 30 -e 1e-5 -p .15 -g 15 -m .8 -c .85 
 ```
 ## Output
