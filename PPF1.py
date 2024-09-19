@@ -59,7 +59,7 @@ def combine_results(scaffold_hits, scaffold_genes, fasta_file, gene_min, percent
     for base_name, gene_count in scaffold_genes.items():
         hits = scaffold_hits.get(base_name, 0)
         ratio = hits / gene_count if gene_count > 0 else 0
-        if gene_count >= gene_min and ratio >= percent_min:
+        if gene_count >= 5 and ratio >= .10:
             description = extract_fasta_description(fasta_file, base_name)
             combined_results.append({
                 'Scaffold': base_name,
