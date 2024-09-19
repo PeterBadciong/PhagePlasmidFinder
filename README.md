@@ -26,11 +26,19 @@ genomad download-database .
 ### Running the PPF
   The PPF uses 3 scripts, PPF.py is the input wrapper script, while PPF1.py and PPF2.py are the scripts that execute genomad and hmmscan, along with the parsing 
   out the data and extracting the scaffolds
-  
-  To execute the PhagePlasmidFinder, required minimum for execution is below
-  ```
+
+### Required Command Line Inputs
+```
+ -i, --input_fasta           Input fasta file in .fna format
+ -g, --genomad-db            Path to the genomad_db
+ -o, --output_folder         Name of folder for results
+ -j, --phage_proteins        Path to Phage HMMs
+ -l, --plasmid_proteins      Path to Plasmid HMMs
+ ```
+### Example Required Command Line Input
+```
   python3 PhagePlasmidFinder.py (Input.fasta) (Path/to/genomad_db/) -o (OutputFolder/) -j (Path/to/PhageProteins.hmm) -l (Path/to/PlasmidProteins.hmm) 
-````
+```
 ### Optional Command Line Inputs
   The following inputs are optional commands for controlling the strictness of parameters
 ```   
