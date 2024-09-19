@@ -50,5 +50,6 @@ genomad download-database .
   -p, --percent_min           Minimum percent crossover of phages and plasmids for a phage plasmid to be identified (default 0.15)
   -m, --plasmid_threshold     Minimum plasmid_score needed to be have an HMMscan run (default 0.8)
   -c, --combined_threshold    Minimum plasmid_score + phage_score sum to have an HMMscan run (default 0.85)
-  -x, --extract_toggle
+  -x, --extract_toggle        Toggles extraction of scaffolds
 ```
+## Output
