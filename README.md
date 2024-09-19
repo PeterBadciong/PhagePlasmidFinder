@@ -41,12 +41,14 @@ conda activate PPF
 
 #Activates the conda enviroment
 
+#If you dont have a genomad_db directory, you can download it using 'genomad download-database .'
+
 Execution
 
 Running the PPF
-  The PPF uses 3 scripts, PPF.py is the input wrapper script, while PlasmidBypass.py and PhagePlasmidFinder.py are the scripts that execute genomad and hmmscan, along with the parsing out the data and extracting the scaffolds
-  To execute the PPF, required minimum for execution is below
-  python3 PPF.py (Input.fasta) (Path/to/genomad_db/) -o (OutputFolder/) -j (Path/to/PhageProteins.hmm) -l (Path/to/PlasmidProteins.hmm) 
+  The PPF uses 3 scripts, PPF.py is the input wrapper script, while PPF1.py and PPF2.py are the scripts that execute genomad and hmmscan, along with the parsing out the data and extracting the scaffolds
+  To execute the PhagePlasmidFinder, required minimum for execution is below
+  python3 PhagePlasmidFinder.py (Input.fasta) (Path/to/genomad_db/) -o (OutputFolder/) -j (Path/to/PhageProteins.hmm) -l (Path/to/PlasmidProteins.hmm) 
 
   The following inputs are optional commands for controlling the strictness of parameters
   
