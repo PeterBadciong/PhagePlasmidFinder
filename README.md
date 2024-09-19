@@ -24,7 +24,7 @@ genomad download-database .
 ## Execution
 
 ### Running the PPF
-  The PPF uses 3 scripts, PPF.py is the input wrapper script, while PPF1.py and PPF2.py are the scripts that execute genomad and hmmscan, along with the parsing 
+  The PPF uses 3 scripts, PhagePlasmidFinder.py is the input wrapper script, while PPF1.py and PPF2.py are the scripts that execute genomad and hmmscan, along with the parsing 
   out the data and extracting the scaffolds
 
 ### Required Command Line Inputs
