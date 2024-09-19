@@ -25,10 +25,10 @@ args = parser.parse_args()
 if not os.path.exists(args.output_dir):
     os.makedirs(args.output_dir)
 
-# Create the Discovery directory inside the output directory
-discovery_dir = os.path.join(args.output_dir, 'Discovery')
-if not os.path.exists(discovery_dir):
-    os.makedirs(discovery_dir)
+# Create the Fragments directory inside the output directory
+fragments_dir = os.path.join(args.output_dir, 'Fragments')
+if not os.path.exists(fragments_dir):
+    os.makedirs(fragments_dir)
 
 # Set the path for the error log
 error_log_file = os.path.join(args.output_dir, 'error_log.txt')
@@ -181,14 +181,14 @@ if os.path.exists(genomad_output):
                             scaffold_file.writelines(scaffold_data)
                         log_to_console_and_file(f"Extracted and saved scaffold {scaffold_name} to {scaffold_output_file}")
 
-# Move specified output files to the Discovery directory
-output_extensions = ['.tbl', 'olds.fasta', 'phage.csv', 'plasmid.csv']
+# Move specified output files to the Fragments directory
+output_extensions = ['.tbl', 's.fasta', 'phage.csv', 'plasmid.csv']
 for filename in os.listdir(args.output_dir):
     if any(filename.endswith(ext) for ext in output_extensions):
         source_path = os.path.join(args.output_dir, filename)
-        destination_path = os.path.join(discovery_dir, filename)
+        destination_path = os.path.join(fragments_dir, filename)
         shutil.move(source_path, destination_path)
-        log_to_console_and_file(f"Moved {filename} to {discovery_dir}")
+        log_to_console_and_file(f"Moved {filename} to {fragments_dir}")
 
 # Create the prodigal directory inside the output directory
 prodigal_dir = os.path.join(args.output_dir, 'prodigal')
