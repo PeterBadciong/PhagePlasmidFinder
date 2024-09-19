@@ -58,3 +58,18 @@ Run the following command on the provided .fna file
 python3 PhagePlasmidFinder.py Tritonibacter_mobilis_A3R06.fna genomad_db -o Tritonibacter_mobilis_Output -j hmm_files/PhageProteins.hmm -l hmm_files/PlasmidProteins.hmm -s 8 -t 30 -e 1e-5 -p .15 -g 15 -m .8 -c .85 
 ```
 ## Output
+
+| Output Directory | Output File | Description |
+| --- | --- | --- |
+| Main | PhagePlasmids.csv | CSV containing the a predicted phage plasmid scaffold, predicted number of genes, percentage of MGE crossover, and fasta description |
+| Main | error_log.txt | Error log |
+| Fragments | phage_hmmscan_output.tbl | HMMscan of genomad predicted phages fragments against plasmid HMMs |
+| Fragments | plasmid_hmmscan_output.tbl | HMMscan of genomad predicted plasmid fragments against phage HMMs |
+| Fragments | [fasta].phage.csv | Results and overall crossover of genomad predicted phages against plasmid HMMs |
+| Fragments | [fasta].plasmid.csv | Results and overall crossover of genomad predicted plasmids against phage HMMs |
+| Fragments | [fasta].Plasmids.fasta | Plasmids ID'd using genomad's nn_classification to be run against phage HMMs |
+| prodigal | PlasmidProdigal.faa | Prodigal output used for finding phage plasmids from genomad predicted plasmids |
+| prodigal | PlasmidProdigal.gff | Prodigal output used for finding phage plasmids from genomad predicted plasmids |
+| prodigal | Phage_Plasmid_hmmscan.tblout | HMMscan of genomad predicted plasmids against phage HMMs |
+| PhagePlasmidFasta | [scaffold].fasta | Extracted .fasta files of each scaffold from the PhagePlasmids.csv file |
+| genomad_output | genomad_outputs | Standard genomad outputs |
