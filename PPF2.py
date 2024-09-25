@@ -100,6 +100,8 @@ def extract_scaffold(fasta_file, scaffold_name):
     
     return scaffold_data if scaffold_data else None
 
+import re
+
 def parse_hmmscan_output(hmmscan_output_file, is_phage):
     """
     Parses the HMMscan output to extract scaffold hits.
@@ -111,6 +113,7 @@ def parse_hmmscan_output(hmmscan_output_file, is_phage):
                 fields = line.split()
                 query_name = fields[2]
 
+                # Handle phage query name
                 if is_phage:
                     parts = query_name.split('|')
                     if len(parts) > 1:
@@ -119,8 +122,11 @@ def parse_hmmscan_output(hmmscan_output_file, is_phage):
                     else:
                         base_name = query_name
                 else:
-                    base_name = re.split(r'_\d+$', query_name)[0]
+                    # Preserve NZ_ or any other prefix, and only remove trailing _number
+                    match = re.match(r'([A-Za-z_]+[A-Za-z0-9\.]+)(_\d+)?', query_name)
+                    base_name = match.group(1) if match else query_name
 
+                # Add the full query_name to the corresponding scaffold hit
                 scaffold_hits.setdefault(base_name, set()).add(query_name)
 
     return {scaffold: len(genes) for scaffold, genes in scaffold_hits.items()}
@@ -128,23 +134,29 @@ def parse_hmmscan_output(hmmscan_output_file, is_phage):
 def count_genes_per_scaffold(faa_file):
     """
     Counts the number of unique genes (proteins) per scaffold from the Prodigal .faa output.
+    Handles both "NZ_" scaffolds and non-"NZ_" scaffolds by splitting appropriately.
     """
     gene_counts = {}
     try:
         with open(faa_file, 'r') as file:
             for line in file:
                 if line.startswith('>'):
-                    scaffold_name = line.split()[0].split('_')[0][1:]
-                    protein_name = line.split()[0][1:]  # Get the full protein name
+                    full_name = line.split()[0][1:]  # Extract full protein name
+                    if full_name.startswith("NZ_"):
+                        # Split on the third underscore for NZ scaffolds
+                        scaffold_name = '_'.join(full_name.split('_')[:2])  # Keep 'NZ_CP32253.1'
+                    else:
+                        # Split on the first underscore for other scaffolds
+                        scaffold_name = full_name.split('_')[0]  # Keep the base scaffold name
 
                     # Initialize the set for this scaffold if it doesn't exist
                     if scaffold_name not in gene_counts:
                         gene_counts[scaffold_name] = set()
 
-                    # Add the protein name to the set for this scaffold
-                    gene_counts[scaffold_name].add(protein_name)
+                    # Add the full protein name to the set for this scaffold
+                    gene_counts[scaffold_name].add(full_name)
 
-        # Convert sets to counts
+        # Convert sets to counts (number of unique genes per scaffold)
         for scaffold in gene_counts:
             gene_counts[scaffold] = len(gene_counts[scaffold])
 
