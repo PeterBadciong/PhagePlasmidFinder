@@ -55,7 +55,7 @@ genomad download-database .
 ### Test Run of Phage Plasmid Finder
 Run the following command on the provided .fna file
 ```
-python3 PhagePlasmidFinderDX.py Tritonibacter_mobilis_A3R06.fna genomad_db -o Tritonibacter_mobilis_Output -j hmm_files/PhageProteins.hmm -l hmm_files/PlasmidProteins.hmm -s 8 -t 30 -e 1e-5 -p .15 -g 15 -m .05 -c .20 
+python3 PhagePlasmidFinderDX.py Tritonibacter_mobilis_A3R06.fna genomad_db -o Tritonibacter_mobilis_Output -j hmm_files/PhageProteins.hmm -l hmm_files/PlasmidProteins.hmm -s 8 -t 30 -e 1e-5 -p .15 -g 10 -m .05 -c .10 
 ```
 ## Output
 
