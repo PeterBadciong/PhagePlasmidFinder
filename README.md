@@ -1,7 +1,7 @@
 # PhagePlasmidFinder: Tool for Identification of Phage Plasmid Hybrids
 
 ## Introduction
-Phage plasmids are hybridized mobile genetic elements found within bacterial genomes. This tool is used to discover novel phage plasmids from inputed genomes. By using a combined search of proviruses and plasmids obtained from genomad, and annotation of phage/plasmid like genes using HMMscan and a currated selection of HMMs of the opposite mobile genetic element. The scaffolds and contigs containing potenial phage plasmids are extracted for further analysis. 
+Phage plasmids are hybridized mobile genetic elements found within bacterial genomes. This tool is used to discover novel phage plasmids from inputed genomes. By using a combined search of prophages and plasmids obtained from genomad, and annotation of phage/plasmid like genes using HMMscan and a currated selection of HMMs of the opposite mobile genetic element. The scaffolds and contigs containing potenial phage plasmids are extracted for further analysis. 
 
 ## Installation: 
 ### Conda + Setup
@@ -61,8 +61,9 @@ python3 PhagePlasmidFinderDX.py Tritonibacter_mobilis_A3R06.fna genomad_db -o Tr
 
 | Output Directory | Output File | Description |
 | --- | --- | --- |
-| Main | PhagePlasmids.csv | CSV containing the a predicted phage plasmid scaffold, predicted number of genes, percentage of MGE crossover, and fasta description |
+| Main | PlasmidHits.csv | .csv containing the a predicted phage plasmid scaffold, predicted number of genes, percentage of MGE crossover, and fasta description from detected genomad plasmids |
 | Main | error_log.txt | Error log |
+| Main | ProphageHits.csv | .csv containing the a predicted phage plasmid scaffold, predicted number of genes, percentage of MGE crossover, and fasta description from detected genomad prophages |
 | Extras | phage_hmmscan_output.tbl | HMMscan of genomad predicted phages Extras against plasmid HMMs |
 | Extras | plasmid_hmmscan_output.tbl | HMMscan of genomad predicted plasmid Extras against phage HMMs |
 | Extras | [fasta].phage.csv | Results and overall crossover of genomad predicted phages against plasmid HMMs |
@@ -71,5 +72,5 @@ python3 PhagePlasmidFinderDX.py Tritonibacter_mobilis_A3R06.fna genomad_db -o Tr
 | Extras/prodigal | PlasmidProdigal.faa | Prodigal output used for finding phage plasmids from genomad predicted plasmids |
 | Extras/prodigal | PlasmidProdigal.gff | Prodigal output used for finding phage plasmids from genomad predicted plasmids |
 | Extras/prodigal | Phage_Plasmid_hmmscan.tblout | HMMscan of genomad predicted plasmids against phage HMMs |
+| Extras/genomad_output | genomad_outputs | Standard genomad outputs |
 | PhagePlasmidFasta | [scaffold].fasta | Extracted .fasta files of each scaffold from the PhagePlasmids.csv file |
-| genomad_output | genomad_outputs | Standard genomad outputs |
