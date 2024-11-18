@@ -61,8 +61,9 @@ python3 PhagePlasmidFinderDX.py Tritonibacter_mobilis_A3R06.fna genomad_db -o Tr
 
 | Output Directory | Output File | Description |
 | --- | --- | --- |
-| Main | PlasmidHits.csv | .csv containing the a predicted phage plasmid scaffold, predicted number of genes, percentage of MGE crossover, and fasta description from detected genomad plasmids |
-| Main | ProphageHits.csv | .csv containing the a predicted phage plasmid scaffold, predicted number of genes, percentage of MGE crossover, and fasta description from detected genomad prophages |
+| Main | PlasmidHits.csv | .csv containing predicted phage plasmid scaffolds, predicted number of genes, percentage of MGE crossover, and fasta description from detected genomad plasmids |
+| Main | ProphageHits.csv | .csv containing predicted phage plasmid scaffolds, predicted number of genes, percentage of MGE crossover, and fasta description from detected genomad prophages |
+| Main | PlasmidAndPhageHits.csv | .csv containing predicted phage plasmid scaffolds, predicted number of genes, percentage of MGE crossover, and fasta description from both detected genomad prophages and plasmids |
 | Main | error_log.txt | Error log |
 | Extras | phage_hmmscan_output.tbl | HMMscan of genomad predicted phages Extras against plasmid HMMs |
 | Extras | plasmid_hmmscan_output.tbl | HMMscan of genomad predicted plasmid Extras against phage HMMs |
