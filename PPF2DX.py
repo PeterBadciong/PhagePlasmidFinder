@@ -133,7 +133,7 @@ def count_genes_per_scaffold(faa_file):
             for line in file:
                 if line.startswith('>'):
                     full_name = line.split()[0][1:]  # Extract full protein name
-                    if full_name.startswith("NZ_"):
+                    if full_name.startswith(("NZ_","NC_","CP_","CM_","AP_","AC_")):
                         # Split on the third underscore for NZ scaffolds
                         scaffold_name = '_'.join(full_name.split('_')[:2])  # Keep 'NZ_CP32253.1'
                     else:
@@ -228,7 +228,7 @@ if __name__ == "__main__":
         scaffold_hits = parse_hmmscan_output(tblout_file, args.is_phage)
         gene_counts = count_genes_per_scaffold(faa_file)
 
-        output_csv = os.path.join(args.output_dir, "PhagePlasmids.csv")
+        output_csv = os.path.join(args.output_dir, "PlasmidHits.csv")
         write_gene_comparison_to_csv(scaffold_hits, gene_counts, args.fasta_file, output_csv, args.gene_min, args.percent_min)
 
         print(f"Gene comparison results saved to {output_csv}")

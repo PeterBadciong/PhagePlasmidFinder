@@ -25,10 +25,10 @@ args = parser.parse_args()
 if not os.path.exists(args.output_dir):
     os.makedirs(args.output_dir)
 
-# Create the Fragments directory inside the output directory
-fragments_dir = os.path.join(args.output_dir, 'Fragments')
-if not os.path.exists(fragments_dir):
-    os.makedirs(fragments_dir)
+# Create the Extras directory inside the output directory
+Extras_dir = os.path.join(args.output_dir, 'Extras')
+if not os.path.exists(Extras_dir):
+    os.makedirs(Extras_dir)
 
 # Set the path for the error log
 error_log_file = os.path.join(args.output_dir, 'error_log.txt')
@@ -181,14 +181,14 @@ if os.path.exists(genomad_output):
                             scaffold_file.writelines(scaffold_data)
                         log_to_console_and_file(f"Extracted and saved scaffold {scaffold_name} to {scaffold_output_file}")
 
-# Move specified output files to the Fragments directory
-output_extensions = ['.tbl', 's.fasta', 'phage.csv', 'plasmid.csv']
+# Move specified output files to the Extras directory
+output_extensions = ['.tbl', 's.fasta', 'plasmid.csv']
 for filename in os.listdir(args.output_dir):
     if any(filename.endswith(ext) for ext in output_extensions):
         source_path = os.path.join(args.output_dir, filename)
-        destination_path = os.path.join(fragments_dir, filename)
+        destination_path = os.path.join(Extras_dir, filename)
         shutil.move(source_path, destination_path)
-        log_to_console_and_file(f"Moved {filename} to {fragments_dir}")
+        log_to_console_and_file(f"Moved {filename} to {Extras_dir}")
 
 # Create the prodigal directory inside the output directory
 prodigal_dir = os.path.join(args.output_dir, 'prodigal')
@@ -203,3 +203,16 @@ for filename in os.listdir(args.output_dir):
         destination_path = os.path.join(prodigal_dir, filename)
         shutil.move(source_path, destination_path)
         log_to_console_and_file(f"Moved {filename} to {prodigal_dir}")
+
+# Move the prodigal directory to the Extras directory
+prodigal_destination = os.path.join(Extras_dir, 'prodigal')
+if os.path.exists(prodigal_dir):
+    shutil.move(prodigal_dir, prodigal_destination)
+    log_to_console_and_file(f"Moved {prodigal_dir} to {prodigal_destination}")
+
+# Move the genomad_output directory to the Extras directory
+genomad_dir = os.path.join(args.output_dir, 'genomad_output')
+genomad_destination = os.path.join(Extras_dir, 'genomad_output')
+if os.path.exists(genomad_dir):
+    shutil.move(genomad_dir, genomad_destination)
+    log_to_console_and_file(f"Moved {genomad_dir} to {genomad_destination}")

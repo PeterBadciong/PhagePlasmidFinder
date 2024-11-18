@@ -13,29 +13,19 @@ def run_hmmscan(hmm_file, fasta_file, output_file, evalue_cutoff="1e-5"):
     command = f"hmmscan --tblout {output_file} -E {evalue_cutoff} {hmm_file} {fasta_file}"
     subprocess.run(command, shell=True, check=True)
 
-def parse_hmmscan_output(hmmscan_output_file, is_phage):
+def parse_hmmscan_output(hmmscan_output_file):
     scaffold_hits = {}
+    query_name = None  # Initialize query_name to prevent unbound error
     with open(hmmscan_output_file) as f:
         for line in f:
             if not line.startswith('#'):
                 fields = line.split()
-                query_name = fields[2]
-
-                # Determine base name for phage or plasmid
-                if is_phage:
-                    parts = query_name.split('|')
-                    if len(parts) > 1:
-                        subparts = parts[1].split('_')
-                        base_name = f"{parts[0]}|{'_'.join(subparts[:3])}" if len(subparts) >= 4 else query_name
-                    else:
-                        base_name = query_name
-                else:
-                    base_name = re.split(r'_\d+$', query_name)[0]
-
+                query_name = fields[2]  # Assuming the query name is in the third column
+                base_name = re.split(r'_\d+$', query_name)[0]
                 # Accumulate hits
                 scaffold_hits.setdefault(base_name, set()).add(query_name)
-
     return {k: len(v) for k, v in scaffold_hits.items()}
+
 
 def read_gene_count_file(gene_count_file):
     scaffold_genes = {}
@@ -59,7 +49,7 @@ def combine_results(scaffold_hits, scaffold_genes, fasta_file, gene_min, percent
     for base_name, gene_count in scaffold_genes.items():
         hits = scaffold_hits.get(base_name, 0)
         ratio = hits / gene_count if gene_count > 0 else 0
-        if gene_count >= 5 and ratio >= .10:
+        if gene_count >= 5 and ratio >= .001:
             description = extract_fasta_description(fasta_file, base_name)
             combined_results.append({
                 'Scaffold': base_name,
@@ -115,50 +105,35 @@ def run_full_analysis(fasta_file, genomad_db, splits, threads, output_dir, phage
     run_genomad(fasta_file, genomad_db, splits, threads, genomad_output_dir)
 
     phage_fasta_file = os.path.join(genomad_output_dir, f"{base_name}_summary", f"{base_name}_virus.fna")
-    plasmid_fasta_file = os.path.join(genomad_output_dir, f"{base_name}_summary", f"{base_name}_plasmid.fna")
 
     phage_proteins_file = os.path.join(genomad_output_dir, f"{base_name}_summary", f"{base_name}_virus_proteins.faa")
-    plasmid_proteins_file = os.path.join(genomad_output_dir, f"{base_name}_summary", f"{base_name}_plasmid_proteins.faa")
 
     phage_gene_count_file = os.path.join(genomad_output_dir, f"{base_name}_summary", f"{base_name}_virus_summary.tsv")
-    plasmid_gene_count_file = os.path.join(genomad_output_dir, f"{base_name}_summary", f"{base_name}_plasmid_summary.tsv")
 
     phage_hmmscan_output_file = os.path.join(output_dir, "phage_hmmscan_output.tbl")
-    plasmid_hmmscan_output_file = os.path.join(output_dir, "plasmid_hmmscan_output.tbl")
 
     if os.path.exists(phage_proteins_file) and os.path.getsize(phage_proteins_file) > 0:
         run_hmmscan(plasmid_hmm_file, phage_proteins_file, phage_hmmscan_output_file, evalue_cutoff)
-        phage_scaffold_hits = parse_hmmscan_output(phage_hmmscan_output_file, is_phage=True)
+        phage_scaffold_hits = parse_hmmscan_output(phage_hmmscan_output_file)
         phage_scaffold_genes = read_gene_count_file(phage_gene_count_file)
         phage_combined_results = combine_results(phage_scaffold_hits, phage_scaffold_genes, fasta_file, gene_min, percent_min)
-        write_output_file(phage_combined_results, os.path.join(output_dir, f"{base_name}_phage.csv"))
+        write_output_file(phage_combined_results, os.path.join(output_dir, f"ProphageHits.csv"))
     else:
         print(f"Phage proteins file '{phage_proteins_file}' is empty or misformatted. Skipping phage HMMScan analysis.")
 
-    if os.path.exists(plasmid_proteins_file) and os.path.getsize(plasmid_proteins_file) > 0:
-        run_hmmscan(phage_hmm_file, plasmid_proteins_file, plasmid_hmmscan_output_file, evalue_cutoff)
-        plasmid_scaffold_hits = parse_hmmscan_output(plasmid_hmmscan_output_file, is_phage=False)
-        plasmid_scaffold_genes = read_gene_count_file(plasmid_gene_count_file)
-        plasmid_combined_results = combine_results(plasmid_scaffold_hits, plasmid_scaffold_genes, fasta_file, gene_min, percent_min)
-        write_output_file(plasmid_combined_results, os.path.join(output_dir, f"{base_name}_plasmid.csv"))
-    else:
-        print(f"Plasmid proteins file '{plasmid_proteins_file}' is empty or misformatted. Skipping plasmid HMMScan analysis.")
 
     if os.path.exists(phage_hmmscan_output_file):
         save_hmmscan_output(phage_hmmscan_output_file, output_dir)
-    if os.path.exists(plasmid_hmmscan_output_file):
-        save_hmmscan_output(plasmid_hmmscan_output_file, output_dir)
 
     if extract_toggle:
         # Collect scaffolds for virus and plasmid
-        scaffolds_to_extract = [result['Scaffold'] for result in phage_combined_results + plasmid_combined_results]
+        scaffolds_to_extract = [result['Scaffold'] for result in phage_combined_results]
 
         # Extract scaffolds and write to a single FASTA file
         output_fasta_file = os.path.join(output_dir, 'PhagePlasmidScaffolds.fna')
         with open(output_fasta_file, 'w') as output_file:
             for scaffold in set(scaffolds_to_extract):  # Use set to avoid duplicates
                 extract_scaffold(phage_fasta_file, scaffold, output_file)  # If phage_proteins_file was processed
-                extract_scaffold(plasmid_fasta_file, scaffold, output_file)  # If plasmid_proteins_file was processed
 
 def main():
     parser = argparse.ArgumentParser(description='Run Genomad and HMMScan analysis on FASTA files.')
@@ -192,3 +167,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
