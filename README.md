@@ -37,7 +37,7 @@ genomad download-database .
  ```
 ### Example Required Command Line Input
 ```
-  python3 PhagePlasmidFinder.py (Input.fasta) (Path/to/genomad_db/) -o (OutputFolder/) -j (Path/to/PhageProteins.hmm) -l (Path/to/PlasmidProteins.hmm) 
+  python3 PhagePlasmidFinderDX.py (Input.fasta) (Path/to/genomad_db/) -o (OutputFolder/) -j (Path/to/PhageProteins.hmm) -l (Path/to/PlasmidProteins.hmm) 
 ```
 ### Optional Command Line Inputs
   The following inputs are optional commands for controlling the strictness of parameters
