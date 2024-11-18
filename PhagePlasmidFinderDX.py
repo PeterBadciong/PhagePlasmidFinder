@@ -2,6 +2,7 @@ import subprocess
 import os
 import argparse
 import shutil  # Import shutil for moving files
+import csv
 
 # Setup argparse to take inputs from the command line
 parser = argparse.ArgumentParser(description="Run script1 and script2 sequentially with shared inputs.")
@@ -216,3 +217,57 @@ genomad_destination = os.path.join(Extras_dir, 'genomad_output')
 if os.path.exists(genomad_dir):
     shutil.move(genomad_dir, genomad_destination)
     log_to_console_and_file(f"Moved {genomad_dir} to {genomad_destination}")
+
+# Function to clean scaffold names by removing anything after '|'
+def clean_scaffold_name(scaffold):
+    if '|' in scaffold:
+        return scaffold.split('|')[0]  # Keep only the part before '|'
+    return scaffold
+
+# Paths for the input CSV files
+prophage_csv_path = os.path.join(args.output_dir, 'ProphageHits.csv')
+plasmid_csv_path = os.path.join(args.output_dir, 'PlasmidHits.csv')
+combined_csv_path = os.path.join(args.output_dir, 'CombinedHits.csv')
+
+# Check if both input files exist
+if os.path.exists(prophage_csv_path) and os.path.exists(plasmid_csv_path):
+    # Read the ProphageHits.csv into a dictionary
+    prophage_data = {}
+    with open(prophage_csv_path, 'r') as prophage_file:
+        reader = csv.DictReader(prophage_file)
+        for row in reader:
+            scaffold = clean_scaffold_name(row['Scaffold'])  # Clean scaffold name
+            prophage_data[scaffold] = {
+                'TotalHits': row['TotalHits'],
+                'HitsPerGene': row['HitsPerGene']
+            }
+
+    # Read the PlasmidHits.csv and write the combined data
+    with open(plasmid_csv_path, 'r') as plasmid_file, open(combined_csv_path, 'w', newline='') as combined_file:
+        reader = csv.DictReader(plasmid_file)
+        fieldnames = [
+            'Scaffold', 'TotalGenes', 
+            'Plasmid_Hits', 'Plasmid_HitsPerGene', 
+            'Prophage_Hits', 'Prophage_HitsPerGene', 
+            'Description'
+        ]
+        writer = csv.DictWriter(combined_file, fieldnames=fieldnames)
+        writer.writeheader()
+
+        for row in reader:
+            scaffold = clean_scaffold_name(row['scaffold'])  # Clean scaffold name
+            combined_row = {
+                'Scaffold': scaffold,
+                'TotalGenes': row['total_genes'],
+                'Plasmid_Hits': row['hmmscan_hits'],
+                'Plasmid_HitsPerGene': row['hits/total_genes'],
+                'Prophage_Hits': prophage_data.get(scaffold, {}).get('TotalHits', 'N/A'),
+                'Prophage_HitsPerGene': prophage_data.get(scaffold, {}).get('HitsPerGene', 'N/A'),
+                'Description': row['description']
+            }
+            writer.writerow(combined_row)
+
+    log_to_console_and_file(f"Combined hits CSV created at {combined_csv_path}")
+else:
+    log_to_console_and_file("ProphageHits.csv or PlasmidHits.csv not found. Skipping combined CSV creation.")
+
