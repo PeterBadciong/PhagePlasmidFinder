@@ -44,18 +44,18 @@ genomad download-database .
 ```   
   -h, --help                  Opens the help menu
   -s, --splits                Determines number of splits for genomad (default 8)
-  -t, --threads            Determines number of threads for genomad (default 10)
+  -t, --threads               Determines number of threads for genomad (default 10)
   -e, --evalue_cutoff         Set E-value cutoff for hmmscan (default 1e-5)
-  -g, --gene_min              Minimum amount of genes for a phage plasmid to be identified (default 15)
+  -g, --gene_min              Minimum amount of genes for a phage plasmid to be identified (default 10)
   -p, --percent_min           Minimum percent crossover of phages and plasmids for a phage plasmid to be identified (default 0.15)
-  -m, --plasmid_threshold     Minimum plasmid_score needed to be have an HMMscan run (default 0.8)
-  -c, --combined_threshold    Minimum plasmid_score + phage_score sum to have an HMMscan run (default 0.85)
+  -m, --plasmid_threshold     Minimum plasmid_score needed to be have an HMMscan run (default 0.05)
+  -c, --phage_threshold       Minimum phage_score sum to have an HMMscan run (default 0.20)
   -x, --extract_toggle        Toggles extraction of scaffolds
 ```
 ### Test Run of Phage Plasmid Finder
 Run the following command on the provided .fna file
 ```
-python3 PhagePlasmidFinder.py Tritonibacter_mobilis_A3R06.fna genomad_db -o Tritonibacter_mobilis_Output -j hmm_files/PhageProteins.hmm -l hmm_files/PlasmidProteins.hmm -s 8 -t 30 -e 1e-5 -p .15 -g 15 -m .8 -c .85 
+python3 PhagePlasmidFinderDX.py Tritonibacter_mobilis_A3R06.fna genomad_db -o Tritonibacter_mobilis_Output -j hmm_files/PhageProteins.hmm -l hmm_files/PlasmidProteins.hmm -s 8 -t 30 -e 1e-5 -p .15 -g 15 -m .05 -c .20 
 ```
 ## Output
 
@@ -63,13 +63,13 @@ python3 PhagePlasmidFinder.py Tritonibacter_mobilis_A3R06.fna genomad_db -o Trit
 | --- | --- | --- |
 | Main | PhagePlasmids.csv | CSV containing the a predicted phage plasmid scaffold, predicted number of genes, percentage of MGE crossover, and fasta description |
 | Main | error_log.txt | Error log |
-| Fragments | phage_hmmscan_output.tbl | HMMscan of genomad predicted phages fragments against plasmid HMMs |
-| Fragments | plasmid_hmmscan_output.tbl | HMMscan of genomad predicted plasmid fragments against phage HMMs |
-| Fragments | [fasta].phage.csv | Results and overall crossover of genomad predicted phages against plasmid HMMs |
-| Fragments | [fasta].plasmid.csv | Results and overall crossover of genomad predicted plasmids against phage HMMs |
-| Fragments | [fasta].Plasmids.fasta | Plasmids ID'd using genomad's nn_classification to be run against phage HMMs |
-| prodigal | PlasmidProdigal.faa | Prodigal output used for finding phage plasmids from genomad predicted plasmids |
-| prodigal | PlasmidProdigal.gff | Prodigal output used for finding phage plasmids from genomad predicted plasmids |
-| prodigal | Phage_Plasmid_hmmscan.tblout | HMMscan of genomad predicted plasmids against phage HMMs |
+| Extras | phage_hmmscan_output.tbl | HMMscan of genomad predicted phages Extras against plasmid HMMs |
+| Extras | plasmid_hmmscan_output.tbl | HMMscan of genomad predicted plasmid Extras against phage HMMs |
+| Extras | [fasta].phage.csv | Results and overall crossover of genomad predicted phages against plasmid HMMs |
+| Extras | [fasta].plasmid.csv | Results and overall crossover of genomad predicted plasmids against phage HMMs |
+| Extras | [fasta].Plasmids.fasta | Plasmids ID'd using genomad's nn_classification to be run against phage HMMs |
+| Extras/prodigal | PlasmidProdigal.faa | Prodigal output used for finding phage plasmids from genomad predicted plasmids |
+| Extras/prodigal | PlasmidProdigal.gff | Prodigal output used for finding phage plasmids from genomad predicted plasmids |
+| Extras/prodigal | Phage_Plasmid_hmmscan.tblout | HMMscan of genomad predicted plasmids against phage HMMs |
 | PhagePlasmidFasta | [scaffold].fasta | Extracted .fasta files of each scaffold from the PhagePlasmids.csv file |
 | genomad_output | genomad_outputs | Standard genomad outputs |
