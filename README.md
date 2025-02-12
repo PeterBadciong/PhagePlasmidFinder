@@ -16,6 +16,7 @@ hmmpress hmm_files/PlasmidProteins.hmm
 hmmpress hmm_files/PhageProteins.hmm
 conda env create -f PPF.yml
 conda activate PPF
+download-db.sh
 ```
 If you dont have a genomad_db directory, you can download it using 
 ```
